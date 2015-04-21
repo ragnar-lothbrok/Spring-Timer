@@ -1,0 +1,64 @@
+<?xml  version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+
+	<util:properties id="cronProperties" location="cron.properties" />
+	<context:property-placeholder
+		properties-ref="cronProperties" />
+
+	<bean id="scheduletask" class="com.timer.demo.ScheduleTask" />
+	<task:annotation-driven />
+	
+	
+	<bean id="demoTask" class="com.timer.demo.DemoTask"></bean>
+	<task:scheduled-tasks>
+	  	<task:scheduled ref="demoTask" method="exexuteScheduledTaskViaConfiguration" cron="#{cronProperties['cron.expression']}" />
+	</task:scheduled-tasks>
+
+
+	<bean id="customTask" class="com.timer.demo.CustomTask"></bean>
+	<bean id="timerTaskFactoryBean"
+		class="org.springframework.scheduling.timer.MethodInvokingTimerTaskFactoryBean">
+		<property name="targetObject" ref="customTask" />
+		<property name="targetMethod" value="executeThis" />
+	</bean>
+	<bean id="timerTask" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<property name="timerTask" ref="timerTaskFactoryBean" />
+		<property name="period" value="5000" />
+	</bean>
+	<bean class="org.springframework.scheduling.timer.TimerFactoryBean">
+		<property name="scheduledTimerTasks">
+			<list>
+				<ref bean="timerTask" />
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="cutomerTask2" class="com.timer.demo.CustomTask2"></bean>
+    <bean id="scheduledTimerTask2" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+	    <!-- run every 3 secs -->
+	    <property name="period" value="3000" />
+	    <property name="timerTask" ref="cutomerTask2" />
+	</bean>
+	<bean class="org.springframework.scheduling.timer.TimerFactoryBean">
+	    <property name="scheduledTimerTasks">
+	        <list>
+	            <ref bean="scheduledTimerTask2" />
+	        </list>
+	    </property>
+	</bean>
+
+</beans>
