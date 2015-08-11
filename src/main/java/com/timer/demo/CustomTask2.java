@@ -6,7 +6,7 @@ public class CustomTask2 extends TimerTask{
 
 	@Override
 	public void run() {
-		System.out.println("Executing CustomTask2's method run : "+new Date().getSeconds());
+//		System.out.println("Executing CustomTask2's method run : "+new Date().getSeconds());
 	}
 
 }

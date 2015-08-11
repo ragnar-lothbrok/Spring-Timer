@@ -21,11 +21,12 @@
 
 	<bean id="scheduletask" class="com.timer.demo.ScheduleTask" />
 	<task:annotation-driven />
-	
-	
+
+
 	<bean id="demoTask" class="com.timer.demo.DemoTask"></bean>
 	<task:scheduled-tasks>
-	  	<task:scheduled ref="demoTask" method="exexuteScheduledTaskViaConfiguration" cron="#{cronProperties['cron.expression']}" />
+		<task:scheduled ref="demoTask"
+			method="exexuteScheduledTaskViaConfiguration" cron="#{cronProperties['cron.expression']}" />
 	</task:scheduled-tasks>
 
 
@@ -46,19 +47,37 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="cutomerTask2" class="com.timer.demo.CustomTask2"></bean>
-    <bean id="scheduledTimerTask2" class="org.springframework.scheduling.timer.ScheduledTimerTask">
-	    <!-- run every 3 secs -->
-	    <property name="period" value="3000" />
-	    <property name="timerTask" ref="cutomerTask2" />
+	<bean id="scheduledTimerTask2" class="org.springframework.scheduling.timer.ScheduledTimerTask">
+		<!-- run every 3 secs -->
+		<property name="period" value="3000" />
+		<property name="timerTask" ref="cutomerTask2" />
 	</bean>
 	<bean class="org.springframework.scheduling.timer.TimerFactoryBean">
-	    <property name="scheduledTimerTasks">
-	        <list>
-	            <ref bean="scheduledTimerTask2" />
-	        </list>
-	    </property>
+		<property name="scheduledTimerTasks">
+			<list>
+				<ref bean="scheduledTimerTask2" />
+			</list>
+		</property>
 	</bean>
+
+
+	<bean id="employee" class="com.springs.test.Employee">
+		<!-- <constructor-arg ref="manager"/> -->
+	</bean>
+	<bean id="manager" class="com.springs.test.Manager" init-method="abc"
+		destroy-method="def">
+		<!-- <constructor-arg ref="employee"/> -->
+	</bean>
+
+	<!-- <context:annotation-config /> -->
+
+	<aop:aspectj-autoproxy />
+
+	<bean id="managerI" class="com.springs.test.ManagerI" />
+
+	<bean id="logAspect" class="com.springs.test.LoggingAspect" />
+	<bean id="demoLoggingAspect" class="com.springs.test.DemoLoggingAspect" />
 
 </beans>
