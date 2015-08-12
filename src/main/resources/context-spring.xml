@@ -75,7 +75,10 @@
 
 	<aop:aspectj-autoproxy />
 
-	<bean id="managerI" class="com.springs.test.ManagerI" />
+	<bean id="managerI" class="com.springs.test.ManagerI" >
+		<property name="name" value="abc"/>
+		<constructor-arg value="def"/>
+	</bean>
 
 	<bean id="logAspect" class="com.springs.test.LoggingAspect" />
 	<bean id="demoLoggingAspect" class="com.springs.test.DemoLoggingAspect" />

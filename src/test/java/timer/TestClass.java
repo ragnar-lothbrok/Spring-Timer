@@ -15,6 +15,8 @@ public class TestClass {
 		manager.addData("added");
 		
 		manager.addData(2);
+		
+		System.out.println(manager.getName());
 	}
 	
 }
