@@ -79,8 +79,41 @@
 		<property name="name" value="abc"/>
 		<constructor-arg value="def"/>
 	</bean>
+	
+	<bean class="com.springs.test.ManagerI" />
+	
+	<bean class="com.springs.test.ManagerI" />
+	
+	<bean id="baseBike" class="com.springs.test.Bike" abstract="true">
+		<property name="company" value="Bajaj"/>
+		<property name="riderNames">
+			<list value-type="java.lang.String">
+				<value>Ashoka</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="customBike1" class="com.springs.test.Bike" parent="baseBike" scope="prototype">
+		<property name="bikeName" value="Pulsor 200"/>
+		<property name="riderNames">
+			<list merge="true" value-type="java.lang.String">
+				<value>Shyamak</value>
+			</list>
+		</property>
+		<property name="date"><ref bean="calendar" /></property>
+	</bean>
+	
+	<bean id="customBike2" class="com.springs.test.Bike" parent="baseBike">
+		<property name="bikeName" value="Duke 200"/>
+		<property name="riderNames">
+			<list merge="true">
+				<value>Sushim</value>
+			</list>
+		</property>
+	</bean>
 
 	<bean id="logAspect" class="com.springs.test.LoggingAspect" />
 	<bean id="demoLoggingAspect" class="com.springs.test.DemoLoggingAspect" />
-
+	
+	<bean id="customListener" class="com.springs.test.CustomListener" />
 </beans>
